@@ -46,45 +46,30 @@ typedef long long int int64;
 typedef unsigned long long int  uint64;
 
 /*
-3 8
+01
+10
+cost 1
 
-1 1 6  //3
-1 2 5  //4
-1 3 4  //2
-1 5 2  //3
-1 6 1  //2
-
-2 2 4  //1   safest k can always be 1
-2 3 3  //1
-2 4 2  //1
-2 5 1  //4
-
-3 3 2 //1
-3 4 1 //
-
-
-3 4
-1 1 2 //i can make all 1 to s no k can be choosen
-1 2 1 //i can make all 1 to s no k can be choosen
-2 1 1 //i can make all 1 to s no k can be choosen
-
-
+10
+01
+cost 1
 
 */
 
 void solve(){
-    ll n, s; cin>>n>>s;
-    if(2*n<=s){
-        yes();
-        for(int i=1;i<=n-1;++i) {
-            cout<<"2 ";
-            s-=2;
-        }
-        cout<<s<<endl;
-        cout<<1<<endl;
-        return;
+    ll n; cin>>n;
+    int ans=0;
+    string s1,s2; cin>>s1>>s2;
+    for(int i=0;i<n-1;++i){
+        if(s1[i]==s2[i]) continue;
+        if(s1[i]=='0' and s2[i]=='1' and s1[i+1]=='1' and s2[i+1]=='0'){ //01 -> 10
+            swap(s1[i], s1[i+1]); i++; ans++; 
+        }else if(s1[i]=='1' and s2[i]=='0' and s1[i+1]=='0' and s2[i+1]=='1'){ //10 ->01
+            swap(s1[i], s1[i+1]); i++; ans++; 
+        } 
     }
-    no();
+    for(int i=0;i<n;++i) if(s1[i]!=s2[i]) ans++;
+    cout<<ans;
 }
 
 signed main()

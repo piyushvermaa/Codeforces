@@ -44,48 +44,69 @@ typedef long int int32;
 typedef unsigned long int uint32;
 typedef long long int int64;
 typedef unsigned long long int  uint64;
-
 /*
-3 8
-
-1 1 6  //3
-1 2 5  //4
-1 3 4  //2
-1 5 2  //3
-1 6 1  //2
-
-2 2 4  //1   safest k can always be 1
-2 3 3  //1
-2 4 2  //1
-2 5 1  //4
-
-3 3 2 //1
-3 4 1 //
+agr ek se saare jude or bakio se koi nh ring topology
+agar sab 2 se jude first last chorke toh bus topology
+agr sab 2 se jude toh ring topology
 
 
+4 3
+1 2
+2 3
 3 4
-1 1 2 //i can make all 1 to s no k can be choosen
-1 2 1 //i can make all 1 to s no k can be choosen
-2 1 1 //i can make all 1 to s no k can be choosen
+1-2-3-4
 
+5 4
+1 2
+3 5
+1 4
+5 4
+
+4 1 2 
 
 
 */
 
-void solve(){
-    ll n, s; cin>>n>>s;
-    if(2*n<=s){
-        yes();
-        for(int i=1;i<=n-1;++i) {
-            cout<<"2 ";
-            s-=2;
-        }
-        cout<<s<<endl;
-        cout<<1<<endl;
-        return;
+bool startopology(vector<int> adj[], int n){
+    int count=0;
+    for(int i=0;i<n;++i){
+        if(adj[i].size()==1) count++;
     }
-    no();
+    if(count==n-1) return true;
+    return false;
 }
+bool bustopology(vector<int> adj[], int n){
+    int count=0;
+    for(int i=0;i<n;++i){
+        if(adj[i].size()>2) return false;
+        if(adj[i].size()==1) count++;
+    }
+    if(count==2) return true;
+    return false;
+}
+bool ringtopology(vector<int> adj[], int n){
+    int count=0;
+    for(int i=0;i<n;++i){
+        if(adj[i].size()!=2) return false;
+    }
+    return true;
+}
+
+void solve(){
+    int n, m; cin>>n>>m;
+    vector<int> adj[n];
+    for(int i=0;i<m;++i){
+        int x,y; cin>>x>>y;
+        adj[x-1].push_back(y-1);
+        adj[y-1].push_back(x-1);
+    }
+
+    if(ringtopology(adj, n)) cout<<"ring topology";
+    else if(bustopology(adj, n)) cout<<"bus topology";
+    else if(startopology(adj, n)) cout<<"star topology";
+    else cout<<"unknown topology";
+}
+
 
 signed main()
 {

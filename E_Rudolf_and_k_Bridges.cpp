@@ -45,46 +45,50 @@ typedef unsigned long int uint32;
 typedef long long int int64;
 typedef unsigned long long int  uint64;
 
+void solve(){
+    ll n, m, k, d; cin>>n>>m>>k>>d;
+    vector<vll> mat(n, vll(m, 0));
+    for(auto& i: mat){
+        for(auto& j: i) cin>>j;
+    }
+    // for(auto& i: mat){
+    //     for(auto& j: i) cout<<j<<" ";
+    //     cout<<endl;
+    // }
+    vll costofrow(n);
+    for(int i=0;i<n;++i){
+        multiset<ll> subs;
+        vll dp(m,0);
+        dp[0]=1; // pehle akhri pe 1 1 lgana hi h
+        subs.insert(1);
+        for(int j=1;j<m;++j){
+            dp[j]= *subs.begin() + mat[i][j] + 1;
+            subs.insert(dp[j]);
+            if(j-d>=1) subs.erase(subs.find(dp[j-d-1]));
+        }
+        costofrow[i]=dp.back();
+    }
+    // for(auto& i: costofrow) cout<<i<<" ";
+    // cout<<endl;
 /*
-3 8
+    k consecutive rows
+    6    4  4   6
+ 0  6   10 14  20
+        10  8   10
 
-1 1 6  //3
-1 2 5  //4
-1 3 4  //2
-1 5 2  //3
-1 6 1  //2
-
-2 2 4  //1   safest k can always be 1
-2 3 3  //1
-2 4 2  //1
-2 5 1  //4
-
-3 3 2 //1
-3 4 1 //
-
-
-3 4
-1 1 2 //i can make all 1 to s no k can be choosen
-1 2 1 //i can make all 1 to s no k can be choosen
-2 1 1 //i can make all 1 to s no k can be choosen
-
-
-
+    prefix array
 */
 
-void solve(){
-    ll n, s; cin>>n>>s;
-    if(2*n<=s){
-        yes();
-        for(int i=1;i<=n-1;++i) {
-            cout<<"2 ";
-            s-=2;
-        }
-        cout<<s<<endl;
-        cout<<1<<endl;
-        return;
-    }
-    no();
+    vector<uint64_t> pre(costofrow.size()+1,0);
+    for(int i=1;i<=costofrow.size();++i) pre[i]=pre[i-1]+costofrow[i-1];
+
+    // for(auto& i: pre) cout<<i<<" ";
+    // cout<<endl;
+
+    uint64_t ans=INF;
+    for(int i=k;i<=costofrow.size();++i) ans=min(ans, pre[i]-pre[i-k]);
+    cout<<ans<<endl;
+    
 }
 
 signed main()
@@ -97,7 +101,7 @@ signed main()
     #endif // ONLINE_JUDGE
 
     int T=1;
-    // cin >> T;
+    cin >> T;
     while (T>0 && T--) solve();
 
     return 0;

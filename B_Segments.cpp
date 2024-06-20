@@ -45,46 +45,10 @@ typedef unsigned long int uint32;
 typedef long long int int64;
 typedef unsigned long long int  uint64;
 
-/*
-3 8
-
-1 1 6  //3
-1 2 5  //4
-1 3 4  //2
-1 5 2  //3
-1 6 1  //2
-
-2 2 4  //1   safest k can always be 1
-2 3 3  //1
-2 4 2  //1
-2 5 1  //4
-
-3 3 2 //1
-3 4 1 //
-
-
-3 4
-1 1 2 //i can make all 1 to s no k can be choosen
-1 2 1 //i can make all 1 to s no k can be choosen
-2 1 1 //i can make all 1 to s no k can be choosen
-
-
-
-*/
-
 void solve(){
-    ll n, s; cin>>n>>s;
-    if(2*n<=s){
-        yes();
-        for(int i=1;i<=n-1;++i) {
-            cout<<"2 ";
-            s-=2;
-        }
-        cout<<s<<endl;
-        cout<<1<<endl;
-        return;
-    }
-    no();
+    ll n; cin>>n;
+    ll ans = (n*(n+1)/(2*n))*((n+2)/2);
+    cout<<ans;
 }
 
 signed main()

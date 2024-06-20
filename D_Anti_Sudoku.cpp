@@ -45,46 +45,27 @@ typedef unsigned long int uint32;
 typedef long long int int64;
 typedef unsigned long long int  uint64;
 
-/*
-3 8
-
-1 1 6  //3
-1 2 5  //4
-1 3 4  //2
-1 5 2  //3
-1 6 1  //2
-
-2 2 4  //1   safest k can always be 1
-2 3 3  //1
-2 4 2  //1
-2 5 1  //4
-
-3 3 2 //1
-3 4 1 //
-
-
-3 4
-1 1 2 //i can make all 1 to s no k can be choosen
-1 2 1 //i can make all 1 to s no k can be choosen
-2 1 1 //i can make all 1 to s no k can be choosen
-
-
-
-*/
-
 void solve(){
-    ll n, s; cin>>n>>s;
-    if(2*n<=s){
-        yes();
-        for(int i=1;i<=n-1;++i) {
-            cout<<"2 ";
-            s-=2;
-        }
-        cout<<s<<endl;
-        cout<<1<<endl;
-        return;
+    char mat[9][9];
+    for(int i=0;i<9;++i){
+        string s; cin>>s;
+        for(int j=0;j<9;++j) mat[i][j]=s[j];
     }
-    no();
+
+    mat[0][1]=mat[0][0];
+    mat[1][3]=mat[0][3];
+    mat[2][6]=mat[1][6];
+    mat[4][0]=mat[3][0];
+    mat[3][4]=mat[2][4];
+    mat[5][7]=mat[4][7];
+    mat[6][2]=mat[5][2];
+    mat[7][5]=mat[6][5];
+    mat[8][8]=mat[7][8];
+
+    for(auto& i: mat){
+        for(auto& j: i) cout<<j;
+        cout<<endl;
+    }
 }
 
 signed main()
@@ -97,7 +78,7 @@ signed main()
     #endif // ONLINE_JUDGE
 
     int T=1;
-    // cin >> T;
+    cin >> T;
     while (T>0 && T--) solve();
 
     return 0;

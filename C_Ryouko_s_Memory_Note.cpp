@@ -45,46 +45,30 @@ typedef unsigned long int uint32;
 typedef long long int int64;
 typedef unsigned long long int  uint64;
 
-/*
-3 8
-
-1 1 6  //3
-1 2 5  //4
-1 3 4  //2
-1 5 2  //3
-1 6 1  //2
-
-2 2 4  //1   safest k can always be 1
-2 3 3  //1
-2 4 2  //1
-2 5 1  //4
-
-3 3 2 //1
-3 4 1 //
-
-
-3 4
-1 1 2 //i can make all 1 to s no k can be choosen
-1 2 1 //i can make all 1 to s no k can be choosen
-2 1 1 //i can make all 1 to s no k can be choosen
-
-
-
-*/
-
 void solve(){
-    ll n, s; cin>>n>>s;
-    if(2*n<=s){
-        yes();
-        for(int i=1;i<=n-1;++i) {
-            cout<<"2 ";
-            s-=2;
-        }
-        cout<<s<<endl;
-        cout<<1<<endl;
-        return;
+    ll n, m; cin>>n>>m;
+    vll arr(m), brr;
+    for(auto& i: arr) cin>>i;
+    for(int i=0;i<m;++i){
+        if(i+1<m and arr[i]==arr[i+1]) continue;
+        if(i-1>=0 and arr[i]==arr[i-1]) continue;
+
+        brr.push_back(arr[i]);
     }
-    no();
+    ll x=brr.size();
+    uint64_t ans=0;
+    for(int i=1;i<x;++i) ans+= abs(brr[i]-brr[i-1]);
+    if(x<m){
+    cout<<ans<<endl;
+    return;
+    }
+    uint64_t y=ans;
+    if(m>2){
+        ans=min(ans, y-abs(brr[1]-brr[0]));
+        ans=min(ans, y-abs(brr[m-1]-brr[m-2]));
+    }
+    for(int i=1;i<m-1;++i) ans = min(ans, y-((abs(brr[i]-brr[i-1]))+(abs(brr[i]-brr[i+1])))+(abs(brr[i-1]-brr[i+1])));
+    cout<<ans<<endl;
 }
 
 signed main()

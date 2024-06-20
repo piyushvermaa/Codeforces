@@ -37,54 +37,69 @@ ll lcm(ll a,ll b) { return a/gcd(a,b)*b; }
 string to_upper(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='a' && a[i]<='z') a[i]-='a'-'A'; return a; }
 string to_lower(string a) { for (int i=0;i<(int)a.size();++i) if (a[i]>='A' && a[i]<='Z') a[i]+='a'-'A'; return a; }
 bool prime(ll a) { if (a==1) return 0; for (int i=2;i<=round(sqrt(a));++i) if (a%i==0) return 0; return 1; }
-void yes() { cout<<"YES\n"; }
-void no() { cout<<"NO\n"; }
+void yes() { cout<<"Yes\n"; }
+void no() { cout<<"No\n"; }
 
 typedef long int int32;
 typedef unsigned long int uint32;
 typedef long long int int64;
 typedef unsigned long long int  uint64;
 
-/*
-3 8
-
-1 1 6  //3
-1 2 5  //4
-1 3 4  //2
-1 5 2  //3
-1 6 1  //2
-
-2 2 4  //1   safest k can always be 1
-2 3 3  //1
-2 4 2  //1
-2 5 1  //4
-
-3 3 2 //1
-3 4 1 //
-
-
-3 4
-1 1 2 //i can make all 1 to s no k can be choosen
-1 2 1 //i can make all 1 to s no k can be choosen
-2 1 1 //i can make all 1 to s no k can be choosen
-
-
-
-*/
+vi bfss(vi adj[],int n){
+    queue<int> q;
+    vi bfs,vis(n+1);
+    q.push(1);
+    vis[1] = 1;
+    int i=1;
+    while(!q.empty()){
+        int node= q.front();
+        bfs.push_back(node);
+        q.pop();
+        for(auto& v: adj[node]){
+            if(vis[v]==0){
+                vis[v] = 1; 
+                q.push(v);
+            }
+        }
+    }
+    return bfs;
+}   
 
 void solve(){
-    ll n, s; cin>>n>>s;
-    if(2*n<=s){
-        yes();
-        for(int i=1;i<=n-1;++i) {
-            cout<<"2 ";
-            s-=2;
-        }
-        cout<<s<<endl;
-        cout<<1<<endl;
-        return;
+    int n; cin>>n;
+    vi adj[n+1];
+    for(int i=0;i<n-1;++i){
+        int x,y; cin>>x>>y;
+        adj[x].push_back(y);
+        adj[y].push_back(x);
     }
-    no();
+    vi arr(n),ind(n+1);;
+    for(int i=0;i<n;++i){
+        cin>>arr[i];
+        ind[arr[i]]=i;
+    }
+    for(int i=1;i<=n;++i){
+        sort(adj[i].begin(), adj[i].end(), [&](int a, int b){
+            return ind[a]<ind[b];//custom sort on the basis of ele that comes first in arr
+        });
+    }
+
+    // for(auto& i: arr) cout<<i<<" ";
+    
+    
+
+    // for(int i=1; i<=n; i++){
+    //     cout<<i<<"-> ";
+    //     for(auto& j: adj[i]) cout<<j<<" ";
+    //     cout<<endl;
+    // }
+    // for(auto& i: bfs) cout<<i<<" ";
+
+    // for(auto& i: bfs) cout<<i<<" ";
+    vi bfs = bfss(adj,n);
+    if(bfs==arr) yes();
+    else no();
+
 }
 
 signed main()

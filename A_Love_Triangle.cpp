@@ -45,44 +45,39 @@ typedef unsigned long int uint32;
 typedef long long int int64;
 typedef unsigned long long int  uint64;
 
-/*
-3 8
-
-1 1 6  //3
-1 2 5  //4
-1 3 4  //2
-1 5 2  //3
-1 6 1  //2
-
-2 2 4  //1   safest k can always be 1
-2 3 3  //1
-2 4 2  //1
-2 5 1  //4
-
-3 3 2 //1
-3 4 1 //
-
-
-3 4
-1 1 2 //i can make all 1 to s no k can be choosen
-1 2 1 //i can make all 1 to s no k can be choosen
-2 1 1 //i can make all 1 to s no k can be choosen
-
-
-
-*/
+template<typename T>
+ostream& operator+(ostream& out, const vector<T> &vec){
+    for(const auto &x : vec){
+        out<<x<<" ";
+    }
+    out<<"\n";
+    return out;
+}
+template<typename T>
+ostream& operator*(ostream& out, const vector<T> &vec){
+    for(const auto &x : vec){
+        out+x;
+    }
+    return out;
+}
+template<typename T>
+istream& operator>>(istream& in, vector<T> &vec){
+    for(auto &x : vec){
+        in>>x;
+    }
+    return in;
+}
 
 void solve(){
-    ll n, s; cin>>n>>s;
-    if(2*n<=s){
-        yes();
-        for(int i=1;i<=n-1;++i) {
-            cout<<"2 ";
-            s-=2;
+    ll n; cin>>n;
+    vll arr(n); 
+    cin>>arr;
+    cout<<endl;
+    for(int i=0;i<n;++i){
+        if(arr[arr[arr[i]-1]-1]-1==i) {
+            yes();
+            return;
         }
-        cout<<s<<endl;
-        cout<<1<<endl;
-        return;
     }
     no();
 }
